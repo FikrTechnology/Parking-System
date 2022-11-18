@@ -2,15 +2,23 @@ import os
 
 nopol_motor = []
 nopol_mobil = []
+rekap_kendaraan = []
+
 karcisMotor = 2000
 karcisMobil = 5000
+
+def dateTime():
+    import time
+
+    dt = time.strftime('%D %H:%M')
+    return dt
 
 
 def time():
     import datetime as dt
     dt = dt.datetime.now()
     hour = '{:02d}'.format(dt.hour)
-    print(dt)
+    # print(dt)
     return hour
 
 
@@ -21,16 +29,19 @@ def motorIn():
         case "posix": os.system("clear")
         case "nt": os.system("cls")
 
+    dt = dateTime()
+
     print("=" * 100)
     print(" "* 40, " Input Data Kendaraan ", " "*40)
     print("=" * 100)
+    print("Date                 : ",dt)
     print("\n")
 
-    nopolMotor = input("Input Nopol Motor  : ")
+    nopolMotor = input("Input Nopol Motor    : ")
 
     try:
         hour = time()
-        nopol_motor.append(nopolMotor + '-' + hour)
+        nopol_motor.append(nopolMotor + '-' + hour + '-' + dt)
         print(nopol_motor)
         show_menu()
 
@@ -46,16 +57,19 @@ def mobilIn():
         case "posix": os.system("clear")
         case "nt": os.system("cls")
 
+    dt = dateTime()
+
     print("=" * 100)
     print(" "* 40, " Input Data Kendaraan ", " "*40)
     print("=" * 100)
+    print("Date                 : ", dt)
     print("\n")
 
-    nopolMobil = input("Input Nopol Mobil  : ")
+    nopolMobil = input("Input Nopol Mobil    : ")
 
     try:
         hour = time()
-        nopol_mobil.append(nopolMobil + '-' + hour)
+        nopol_mobil.append(nopolMobil + '-' + hour + '-' + dt)
         print(nopol_mobil)
         show_menu()
 
@@ -71,12 +85,15 @@ def motorOut():
         case "posix": os.system("clear")
         case "nt": os.system("cls")
 
+    dt = dateTime()
+
     print("=" * 100)
     print(" "* 40, " Input Data Kendaraan ", " "*40)
     print("=" * 100)
+    print("Date                 : ", dt)
     print("\n")
 
-    nopolMotor = input("Input Nopol Motor  : ")
+    nopolMotor = input("Input Nopol Motor    : ")
 
     try:
         if len(nopol_motor) == 0:
@@ -86,7 +103,7 @@ def motorOut():
                 if questionQuit == 'Y' or questionQuit == 'y':
                     show_menu()
                 elif questionQuit == 'N' or questionQuit == 'n':
-                    break
+                    motorOut()
                 else:
                     print("Yang Anda Masukkan salah!!")
 
@@ -96,6 +113,7 @@ def motorOut():
             splitNopol = nopolOut.split('-')
             nomorKendaraan = splitNopol[0]
             jamMasukKendaraan = splitNopol[1]
+            dateIn = splitNopol[2]
 
             if len(nopolMotor) == len(nomorKendaraan) and nomorKendaraan.__contains__(nopolMotor):
                 # print('masuk sini 2')
@@ -113,13 +131,14 @@ def motorOut():
                 print("=" * 100)
                 print("\n")
                 print("Nomor Kendaraan              : ", nomorKendaraan)
-                print("Jam Masuk Kendaraan (Hour)   : ", jamMasukKendaraan)
+                print("Jam Masuk Kendaraan          : ", dateIn)
                 print(" ")
-                print("Jam Keluar Kendaraan (Hour)  : ", hour)
+                print("Jam Keluar Kendaraan         : ", dt)
                 print("Total Biaya Parkir           : ", biayaParkir)
                 print("\n")
                 print("=" * 100)
 
+                rekap_kendaraan.append(str(nomorKendaraan) + '-' + dateIn + '-' + dt + '-' + str(biayaParkir) + '-' + 'motor')
                 nopol_motor.remove(nopolOut)
                 
                 while True:
@@ -158,12 +177,15 @@ def mobilOut():
         case "posix": os.system("clear")
         case "nt": os.system("cls")
 
+    dt = dateTime()
+
     print("=" * 100)
     print(" "* 40, " Input Data Kendaraan ", " "*40)
     print("=" * 100)
+    print("Date                 : ", dt)
     print("\n")
 
-    nopolMobil = input("Input Nopol Mobil  : ")
+    nopolMobil = input("Input Nopol Mobil    : ")
 
     try:
         if len(nopol_mobil) == 0:
@@ -173,7 +195,7 @@ def mobilOut():
                 if questionQuit == 'Y' or questionQuit == 'y':
                     show_menu()
                 elif questionQuit == 'N' or questionQuit == 'n':
-                    break
+                    mobilOut()
                 else:
                     print("Yang Anda Masukkan salah!!")
             
@@ -183,6 +205,7 @@ def mobilOut():
             splitNopol = nopolOut.split('-')
             nomorKendaraan = splitNopol[0]
             jamMasukKendaraan = splitNopol[1]
+            dateIn = splitNopol[2]
             # print('nopolOut ', nopolOut)
             # print('nomor kendaraan ', nomorKendaraan)
             # print('jam masuk kendaraan ', jamMasukKendaraan)
@@ -208,13 +231,14 @@ def mobilOut():
                 print("=" * 100)
                 print("\n")
                 print("Nomor Kendaraan              : ", nomorKendaraan)
-                print("Jam Masuk Kendaraan (Hour)   : ", jamMasukKendaraan)
+                print("Jam Masuk Kendaraan          : ", dateIn)
                 print(" ")
-                print("Jam Keluar Kendaraan (Hour)  : ", hour)
+                print("Jam Keluar Kendaraan         : ", dt)
                 print("Total Biaya Parkir           : ", biayaParkir)
                 print("\n")
                 print("=" * 100)
 
+                rekap_kendaraan.append(str(nomorKendaraan) + '-' + dateIn + '-' + dt + '-' + str(biayaParkir) + '-' + 'mobil')
                 nopol_mobil.remove(nopolOut)
                 
                 while True:
@@ -259,7 +283,10 @@ def show_data():
     print("=" * 100)
     print("1. Tekan [1] untuk Data Motor masuk")
     print("2. Tekan [2] untuk Data Mobil masuk")
-    print("3. Tekan [3] Kembali ke Menu")
+    print("3. Tekan [3] untuk Data Rekap Parkiran")
+    print('\n')
+    print("4. Tekan [99] Kembali ke Menu")
+    print('\n')
 
     inpMenu = input("Silahkan Masukan Nomor Data yang ingin di Lihat : ")
 
@@ -287,6 +314,16 @@ def show_data():
                 else:
                     print("Yang Anda Masukkan salah!!")
         elif chooseData == 3:
+            print(rekap_kendaraan)
+            while True:
+                questionQuit = input("Tekan Y untuk lanjut ke Menu (Y/N) : ")
+                if questionQuit == 'Y' or questionQuit == 'y':
+                    show_menu()
+                elif questionQuit == 'N' or questionQuit == 'n':
+                    show_data()
+                else:
+                    print("Yang Anda Masukkan salah!!")
+        elif chooseData == 99:
             show_menu()
         else:
             print("Inputan yang anda masukan tidak ada dalam list.")
