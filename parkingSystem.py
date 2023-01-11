@@ -1,5 +1,11 @@
 import os
 
+userId = "admin"
+passId = "admin"
+
+attemp = 0
+isFrom = ""
+
 nopol_motor = []
 nopol_mobil = []
 rekap_kendaraan = []
@@ -349,6 +355,9 @@ def show_menu():
     print("3. Tekan [3] untuk Motor Keluar")
     print("4. Tekan [4] untuk Mobil Keluar")
     print("5. Tekan [5] untuk Menampilkan Data")
+    print("")
+    print("98. Tekan [98] untuk ganti Password Login")
+    print("99. Tekan [99] untuk keluar ke login")
     print("\n")
 
     inpMenu = input("Silahkan Masukan Nomor sesuai Petunjuk diatas : ")
@@ -366,14 +375,94 @@ def show_menu():
             mobilOut()
         elif chooseTransport == 5:
             show_data()
+        elif chooseTransport == 98:
+            changePass("menu")
+        elif chooseTransport == 99:
+            login()
         else:
             print("Inputan yang anda masukan tidak ada dalam list.")
             show_menu()
     except ValueError:
         print("Inputan tidak sesuai")
         show_menu()
-    
 
+def changePass(isFromWhere):
+    global passId
+    global isFrom
+
+    sistem_operasi = os.name
+
+    match sistem_operasi:
+        case "posix": os.system("clear")
+        case "nt": os.system("cls")
+
+    print("=" * 100)
+    print(" "* 30, " Selamat Datang di Parkir UBSI Slipi ", " "*30)
+    print("=" * 100)
+    print("\n")
+
+    isFrom = isFromWhere
+
+    passId = input("Silahkan Masukkan Password anda : ")
+
+    try:
+        if isFrom == "menu":
+            show_menu()
+        elif isFrom == "login":
+            return passId
+
+    except ValueError:
+        print("Inputan tidak sesuai")
+        changePass(isFrom)
+
+    
+def login():
+    global userId
+    global passId
+    global attemp
+
+    sistem_operasi = os.name
+
+    match sistem_operasi:
+        case "posix": os.system("clear")
+        case "nt": os.system("cls")
+
+    print("=" * 100)
+    print(" "* 30, " Selamat Datang di Parkir UBSI Slipi ", " "*30)
+    print("=" * 100)
+    print("\n")
+    username = input(" "* 30+ "Username    : ")
+    password = input(" "* 30+ "Password    : ")
+
+    try:
+        if username == userId:
+            if password == passId:
+                print("Login Berhasil")
+                show_menu()
+            else:
+                if attemp == 3 :
+                    passId = ""
+                    while True:
+                        chooseInp = str(input("Password anda telah di Blokir, Tekan Y untuk mengganti Password!!   : ")).upper()
+                        if chooseInp == "Y":
+                            changePass("login")
+                            break
+                        elif chooseInp == "N":
+                            login()
+                        else:
+                            print("Input yang anda masukkan tidak sesuai!!")
+                    attemp = 0
+                    login()
+                else:
+                    attemp += 1
+                    print("Password anda tidak sesuai!!")
+                    login()
+        else:
+            print("Username Salah")
+            login()
+    except ValueError:
+        print("Inputan tidak sesuai")
+        login()
 
 if __name__ == "__main__":
 
@@ -383,4 +472,4 @@ if __name__ == "__main__":
         case "posix": os.system("clear")
         case "nt": os.system("cls")
 
-    show_menu()
+    login()
